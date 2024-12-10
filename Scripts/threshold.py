@@ -2,7 +2,7 @@ import subprocess
 import smtplib
 import creds_for_email
 
-email_to_received="raymart.orbita@gmail.com"
+email_to_received="Add the email of the receiver here"
 email = creds_for_email.EMAIL
 password = creds_for_email.PASSWORD
 
