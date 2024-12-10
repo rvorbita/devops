@@ -189,7 +189,3 @@ def ssh_command(hostname, username, pem_file_path, command):
         print(f"Error executing SSH command: {str(e)}")
 
 
-
-
-
-test = SimpleTool.change_directory("/Users/raymartorbita/Documents/DevOps", "/Users/raymartorbita/Documents/DevOps/Scripts")
