@@ -12,7 +12,23 @@ from tkinter import filedialog, messagebox, scrolledtext, simpledialog
 import shutil
 import time
 
-#Pre-requisite 
+
+'''
+Script to upload files to Google Drive and generate google drive url
+
+Author: Raymart
+Version: 1.0
+Date: 11-01-25
+
+Usage:
+   Tool is a GUI tool that allows users to upload files to Google Drive and retrieve the Google Drive URL.
+
+Note:
+    Storage quota is limited to 15GB. base on the free google drive plan per user.
+
+
+Pre-requisite to use this tool:
+
 # Create a Google Cloud Project:
     # Go to the Google Cloud Console.
     # Create a new project or select an existing one.
@@ -24,6 +40,9 @@ import time
     # Replace 'path/to/your/keyfile.json' with the actual path to the downloaded key file.
 # Set parent_folder_id (optional):
     # If you want to upload the file to a specific folder, get the folder's ID and set the parent_folder_id argument accordingly.
+
+'''
+
 
 # Define the scope and service account file path
 SCOPE = ['https://www.googleapis.com/auth/drive']
@@ -42,7 +61,6 @@ def set_folder():
 
     if new_parent_folder_id:
         PARENT_FOLDER_ID = new_parent_folder_id
-        print(PARENT_FOLDER_ID)
     else:
         messagebox.showwarning("Error", "Parent folder ID not set.")
 
@@ -117,7 +135,6 @@ def zip_files(files_to_zip):
     except Exception as e:
         print(f"An error occurred while moving the zip file to the temp directory. {e}")
         
-
     return zip_full_name
 
 
@@ -138,9 +155,15 @@ def retrieve_url():
         text_area.insert(tk.END, FOLDER_PATH)
         text_area.pack()
 
+        copy_button = tk.Button(display_window, text="Copy to Clipboard", command=lambda: (pyclip.copy(FOLDER_PATH), messagebox.showinfo("Copied", "URL copied to clipboard.")))
+        copy_button.pack()
+
+        close_button = tk.Button(display_window, text="Close", command=display_window.destroy)
+        close_button.pack()
+
         #copy the file id to the clipboard to download
-        pyclip.copy(FOLDER_PATH)
-        print("Copied the download file URL.")
+        # pyclip.copy(FOLDER_PATH)
+        # print("Copied the download file URL.")
 
     except Exception:
         messagebox.showerror("Error", f"An error occurred: You need to Upload before retrieving the URL.")
@@ -203,7 +226,7 @@ def upload_file():
             write_log(uploaded_file_name)
             #get the file id
             file_id = file.get('id')
-            messagebox.showinfo("Success", f"File uploaded successfully. \nFile ID: {file_id}")
+            messagebox.showinfo("Success", f"File uploaded successfully. \nPlease use the Retrieve URL button to download the file.")
 
         except Exception as e:
             messagebox.showerror("Error", f"Error uploading file: {e}")
