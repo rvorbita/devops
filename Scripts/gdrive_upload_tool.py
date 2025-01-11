@@ -50,6 +50,7 @@ SERVICE_ACCOUNT_FILE = SERVICE_ACCOUNT
 PARENT_FOLDER_ID = None
 
 log_path = os.getcwd() + "\logs"
+root = None
 
 def set_folder():
     '''
@@ -80,12 +81,10 @@ def resource_path(relative_path):
     return the full path to image files in the project
     '''
     base_path = os.path.abspath(".")
-    try:
-        base_path = sys._MEIPASS
-    except Exception:
-        base_path = os.path.abspath(".")
 
-    return os.path.join(base_path, relative_path)
+    full_path = os.path.join(base_path, relative_path)
+
+    return full_path
 
 
 def write_log(file_to_upload):
@@ -155,15 +154,12 @@ def retrieve_url():
         text_area.insert(tk.END, FOLDER_PATH)
         text_area.pack()
 
+        #copy the file id to the clipboard to download
         copy_button = tk.Button(display_window, text="Copy to Clipboard", command=lambda: (pyclip.copy(FOLDER_PATH), messagebox.showinfo("Copied", "URL copied to clipboard.")))
         copy_button.pack()
 
         close_button = tk.Button(display_window, text="Close", command=display_window.destroy)
         close_button.pack()
-
-        #copy the file id to the clipboard to download
-        # pyclip.copy(FOLDER_PATH)
-        # print("Copied the download file URL.")
 
     except Exception:
         messagebox.showerror("Error", f"An error occurred: You need to Upload before retrieving the URL.")
@@ -235,12 +231,17 @@ def gui():
     '''
     Gui for the program 
     '''
+    global root
+
     root = tk.Tk()
     root.title("GDrive Upload Tool")
     root.geometry("420x190")
     root.eval("tk::PlaceWindow . center")
-    root.iconbitmap(resource_path("images\gdrive.ico"))
-    img = tk.PhotoImage(file=resource_path("images\gdrive.png"))
+    root.iconbitmap(resource_path(".\img\gdrive.ico"))
+    # root.iconbitmap("C:\RaymartFiles\Learning\Python\projects\devops\Scripts\img\gdrive.ico")
+
+    img = tk.PhotoImage(file=resource_path(".\img\gdrive.png"))
+    # img = tk.PhotoImage(file="C:\RaymartFiles\Learning\Python\projects\devops\Scripts\img\gdrive.png")
     
     parent_folder_button = tk.Button(root, image=img, text="Add Folder Name", command=set_folder)
     parent_folder_button.pack(side=tk.LEFT, anchor='nw')
